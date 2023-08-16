@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel = "shortcut icon" href = "https://cdn-icons-png.flaticon.com/512/2991/2991644.png">
+  <title>Simulator</title>
+  <link href='https://fonts.googleapis.com/css?family=Aldrich|Audiowide' rel='stylesheet'>
+  <style>
+    body{ overflow: hidden;
+    background-color: #ffffe6;
+    font-family: 'Aldrich';
+    }
+    #box{
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    #choice{
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      font-weight: bold;
+      font-size: 20px;
+      
+    }
+    .C{
+      border: 3px solid black;
+      border-radius: 10px;
+      width: 180px;
+      height: 180px;
+      background-color: #cce6ff;
+      box-shadow: 2px 2px 3px grey;
+    }
+    
+    #option{
+      height: 100px;
+      display: flex;
+      margin-top: 10px;
+      justify-content: space-evenly;
+      align-items: center;     
+    }
+
+    #A{ margin-top: 20px;}
+
+    .O{
+      height: 90px;
+      width: 100px;
+      border: 3px solid black;
+      border-radius: 10px;
+      font-size: 20px;
+      font-family: 'Audiowide';
+      background-color: #e6ccff;
+      transition: all 0.5s ease;
+      box-shadow: 2px 2px 3px grey;
+    }
+
+    p{
+      margin-top: 0px;
+    }
+    h4{ margin: 10px 0px 10px 0px;}
+    .O:hover{
+      scale: 1.1;
+      cursor: pointer;
+    }
+
+    .O:active{
+      scale: 0.9;
+    }
+
+    #s{
+      display: flex;
+      flex-direction: column;
+    }
+
+    .S{
+      font-size: 25px;
+      margin: 20px 0px 20px 0px;
+    }
+
+    #result{
+      height: 70px;;
+    }
+
+    #I{ background-color: #ffcce0;}
+    #result{
+      height: 150px;
+      width: 200px;
+      border: 3px solid black;
+      border-radius: 5px;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translate(-50%,-50%) scale(0.1);
+      text-align: center;
+      background: #e6e6e6;
+      visibility: hidden;
+      transition: all 0.5s ease-in-out;
+    }
+
+    #result.open{
+      visibility: visible;
+      top: 50%;
+      transform: translate(-50%,-50%) scale(1);
+    }
+    
+    #result img{
+      margin-top: -30%;
+      border: 3px solid black;
+      border-radius: 50%;
+    }
+
+    #result p{
+      margin-top: 20px;
+      font-size: 30px;
+      font-weight: bold;
+    }
+
+    #detail{
+      margin: 20px 200px 20px 200px;
+      display: flex;
+      justify-content:space-evenly;
+      align-items: center;
+    }
+
+    #help{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      border: 2px solid black;
+      border-radius: 10px;
+      text-align: center;
+      background-color: whitesmoke;
+      width: 300px;
+      height: 320px;
+      visibility: hidden;
+    }
+    #help img{
+      height: 200px;
+      margin-top: -30%;
+    }
+    #btn{
+      margin-top: 10px;
+      border-radius: 7px;
+      border: 2px solid gray;
+      color: white;
+      background-color: black;
+      transition: all 0.1s ease;
+    }
+    #btn:hover,#H:hover{
+      scale: 1.1;
+      cursor: pointer;
+    }
+    #btn:active,#H:active{ scale: 0.9;}
+
+    .T{
+      font-size: 20px;
+      margin-bottom: 0px;
+    }
+    .i{
+      font-size: 12px;
+      color: grey;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+    #H{
+      border: 2px solid black;
+      border-radius: 10px;
+      transition: all 0.4s ease;
+    }
+    
+    #M{
+      text-align: center;
+    }
+    #M span{
+      font-family: 'Audiowide';
+      font-size: 40px;
+      font-weight: bold;
+      z-index: 5;
+      position: relative;
+      top: 5px;
+    }
+    #M img{
+      border-radius: 50%;
+      border: 2px solid black;
+      position: absolute;
+      left: 188px;
+      top: 2px;
+      background-color: transparent;
+      z-index: 1;
+    }
+    
+
+  </style>
+
+
+</head>
+<body>
+  <div id="M">
+    <img src="/img/logo.png" height="40px">
+    <span>ROCK PAPER SCISSOR</span>
+  </div>
+  
+  <div id="box">
+    <div id="A">
+      <div id="choice">
+        <div id="user" class="C"><p>Player</p><img id="I1" src="/img/user.png" height="120px"></div>
+        <span id="s">
+          <span class="S">Player</span>
+          <span style="color: red;">V/S</span>
+          <span class="S">Computer</span>
+        </span>
+        <div id="computer" class="C"><p>Computer</p><img id="I2" src="/img/computer.png" height="120px"></div>
+      </div>
+      <h4 style="color: grey">Choose any one</h4>
+      
+      <div id="option">
+        <button id="O1" class="O" ><img src="/img/rock.png" alt="Rock" height="50px"><p>Rock</p></button>
+        <button id="O2" class="O" ><img src="/img/paper.png" alt="Paper" height="50px"><p>Paper</p></button>
+        <button id="O3" class="O" ><img src="/img/scissors.png" alt="Scissor" height="50px"><p>Scissor</p></button>
+      </div>
+    </div>
+    
+    <div id="help">
+      <img src="/img/rps.png">
+      <p class="T"><b>Rock</b> beats <b>Scissors</b></p>
+      <p class="i">Rock wins by breaking scissors</p>
+      <p class="T"><b>Scissor</b> beat <b>Paper</b></p>
+      <p class="i">Scissors win by cutting paper</p>
+      <p class="T"><b>Paper</b> beats <b>Rock</b></p>
+      <p class="i">Paper wins by covering rock</p>
+      <button id="btn">Close</button>
+    </div>
+
+    <div id="result">
+      <img id="I" src="" height="120px">
+      <p id="P"></p>
+    </div>
+    <div id="detail">
+      <span>Won : 0</span>
+      <span>Lost : 0</span>
+      <span>Tie : 0</span>
+    </div>
+    <button  id="H"><b>HELP</b></button>
+  
+  </div>
+</body>
+
+<script>
+
+  let userChoice;
+  let computerChoice;
+  const res = document.getElementById('P');
+  const image = document.getElementById('I');
+  const pic = document.getElementById('I1');
+  const computerPic = document.getElementById('I2');
+  const c = document.getElementById('result');
+  let won = 0,lost = 0,tie = 0;
+  const d = document.getElementById('detail');
+  let popup = document.getElementById('result');
+
+    function clicked(choice) {
+      
+      if (choice === "rock") {
+        pic.src = "/img/rock.png";
+        userChoice = 1;
+        computerChoice = Math.floor(Math.random() * 3) + 1;
+      } 
+      else if (choice === "paper") {
+        pic.src = "/img/paper.png";
+        userChoice = 2;
+        computerChoice = Math.floor(Math.random() * 3) + 1;
+      } 
+      else if (choice === "scissors") {
+        pic.src = "/img/scissors.png";
+        userChoice = 3;
+        computerChoice = Math.floor(Math.random() * 3) + 1;
+      }
+
+      if (computerChoice === 1) {
+        computerPic.src = "/img/rock.png";
+      }
+      else if (computerChoice === 2) {
+        computerPic.src = "/img/paper.png";
+      }
+      else if (computerChoice === 3) {
+        computerPic.src = "/img/scissors.png";
+      }
+
+      if (userChoice === computerChoice) {
+        res.innerHTML="Its Tie!";
+        image.src = "/img/tie.png";
+        c.style.backgroundColor = "#ffff66";
+        tie++;
+        setTimeout(() => d.children[2].innerHTML = "Tie: " + tie, 2000);
+      } else if ((userChoice === 1 && computerChoice === 3) || (userChoice === 2 && computerChoice === 1) || (userChoice === 3 && computerChoice === 2)) {
+        res.innerHTML="You Win!";
+        image.src = "/img/happy.png";
+        c.style.backgroundColor = "#99e699";
+        won++;
+        setTimeout(() => d.children[0].innerHTML = "Won: " + won, 2000);
+      } else {
+        res.innerHTML="You lost!";
+        image.src = "/img/sad.png";
+        c.style.backgroundColor = "#ff9999";
+        lost++;
+        setTimeout(() => d.children[1].innerHTML = "Lost: " + lost, 2000);
+      }
+    }
+    
+    
+
+    function openPop() {
+      setTimeout(() => {
+        popup.classList.add('open');
+        setTimeout(() => {
+          pic.src = "/img/user.png";
+          computerPic.src = "/img/computer.png";
+          popup.classList.remove('open');
+        }, 2000);
+      }, 500);
+      
+  }
+    function open(){
+      document.getElementById('help').style.visibility = "visible";
+    }
+    function close(){
+      document.getElementById('help').style.visibility = "hidden";
+    }
+    document.getElementById('H').addEventListener('click',open);
+    document.getElementById('btn').addEventListener('click',close);
+
+    document.getElementById("O1").addEventListener('click', function() {
+      clicked("rock");
+      openPop();
+    });
+
+    document.getElementById("O2").addEventListener('click', function() {
+      clicked("paper");
+      openPop();
+    });
+
+    document.getElementById("O3").addEventListener('click', function() {
+      clicked("scissors");
+      openPop();
+    });
+
+</script>
+
+</html>
