@@ -42,9 +42,13 @@ To run this project locally, follow these steps:
 To start the Streamlit application, run the following command:
 ```bash
 streamlit run app.py
+```
+
 
 
 ## URL 
-**URL to Hosted application** : https://stockanalysiszone.streamlit.app
+**URL to Hosted application** : [Stocks Analysis](https://stockanalysiszone.streamlit.app)
+https://stockanalysiszone.streamlit.app
+
 
 
