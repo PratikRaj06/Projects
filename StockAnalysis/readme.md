@@ -20,6 +20,11 @@ Welcome to the Stock Analysis Project! This project is designed to provide compr
 - **Plotly**: Used for creating interactive graphs and visualizations to analyze stock data.
 - **Prophet**: A forecasting tool used to predict future stock prices based on historical data.
 
+
+## Application Look
+
+![Image](/app_view.png)
+
 ## Installation
 
 To run this project locally, follow these steps:
