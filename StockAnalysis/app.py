@@ -3,6 +3,7 @@ import streamlit as st
 import time
 import pandas as pd
 from streamlit_option_menu import option_menu
+import numpy as np
 from datetime import date,datetime,timedelta
 from plotly import graph_objs as go
 from prophet import Prophet
@@ -12510,8 +12511,8 @@ code = ("", "^NSEI","^BSESN","20MICRONS.NS",
 "ZYDUSWELL.BO")
 
 nifty = yf.Ticker('^NSEI')
-currentN = nifty.history(period='1d')['Close'].iloc[-1]
-lastN = nifty.history(period='2d')['Close'].iloc[-2]
+currentN = nifty.history(period='5d')['Close'].iloc[-1]
+lastN = nifty.history(period='5d')['Close'].iloc[-2]
 changeN = currentN - lastN
 percentage_changeN = (changeN / lastN) * 100
 current_formattedN = f"₹{currentN:.2f}"
@@ -12519,8 +12520,8 @@ change_formattedN = f"{changeN:.2f}"
 percentage_change_formattedN = f"{percentage_changeN:.2f}%"
 
 sensex = yf.Ticker('^BSESN')
-currentS = sensex.history(period='1d')['Close'].iloc[-1]
-lastS = sensex.history(period='2d')['Close'].iloc[-2]
+currentS = sensex.history(period='5d')['Close'].iloc[-1]
+lastS = sensex.history(period='5d')['Close'].iloc[-2]
 changeS = currentS - lastS
 percentage_changeS = (changeS / lastS) * 100
 current_formattedS = f"₹{currentS:.2f}"
@@ -12554,8 +12555,8 @@ if not selected == "HELP":
         T = yf.Ticker(selected_stocks)
         if selected == "HOME":
             
-            current = T.history(period='1d')['Close'].iloc[-1]
-            last = T.history(period='2d')['Close'].iloc[-2]
+            current = T.history(period='5d')['Close'].iloc[-1]
+            last = T.history(period='5d')['Close'].iloc[-2]
             change = current - last
             percentage_change = (change / last) * 100
             current_formatted = f"₹{current:.2f}"
@@ -12616,8 +12617,8 @@ if not selected == "HELP":
                 exit_clicked = False 
 
                 while not exit_clicked:
-                    current = T.history(period='1d')['Close'].iloc[-1]
-                    last = T.history(period='2d')['Close'].iloc[-2]
+                    current = T.history(period='5d')['Close'].iloc[-1]
+                    last = T.history(period='5d')['Close'].iloc[-2]
                     change = current - last
                     percentage_change = (change / last) * 100
                     current_formatted = f"₹{current:.2f}"
@@ -12686,7 +12687,7 @@ if not selected == "HELP":
             
             st.write("See Data in a Time Interval")
             col1, col2, col3 = st.columns(3)
-            t = ["1m", "2m", "5m", "15m", "30m", "60m", "90m", "1h", "1d", "5d", "1wk", "1mo", "3mo"]
+            t = ["1m", "5m", "15m", "30m", "90m", "1h", "1d", "5d", "1wk", "1mo", "3mo"]
             
             today = datetime.today().date()
             start_date = (today - timedelta(days=7))
@@ -12702,7 +12703,7 @@ if not selected == "HELP":
             
             if selected_interval == "1m":
                 max_date_diff = timedelta(days=7)
-            elif selected_interval in ["2m", "5m", "15m", "30m", "90m"]: 
+            elif selected_interval in ["5m", "15m", "30m", "90m"]: 
                 max_date_diff = timedelta(days=60)
             elif selected_interval in ["60m", "1h"]:
                 max_date_diff = timedelta(days=730)
@@ -12866,52 +12867,63 @@ if not selected == "HELP":
                     title = item['title']
                     source = item['publisher']
                     url = item['link']
+                    
                     st.markdown(f"Title: {title} -- <a href='{url}' style='color: lightgrey;'>See More</a>", unsafe_allow_html=True)
                     st.caption(f"**Source:** {source}")
                    
           
         if selected == "FORECAST":
-            st.header("Forecating")
+            st.header("Forecasting")
             st.write("---")
-            n_years = st.slider ("Months Of Prediction : ",1, 6)
-            period = n_years*30
+            n_years = st.slider("Months Of Prediction: ", 1, 24)
+            period = n_years * 30
+            
+            # Preprocess the data
             df = data.reset_index()[["Date", "Close"]].copy()
             df["Date"] = pd.to_datetime(df["Date"])
             df["DayOfWeek"] = df["Date"].dt.dayofweek
-            df = df[(df["DayOfWeek"] != 5) & (df["DayOfWeek"] != 6)]     
-            df= df.rename(columns={"Date": "ds", "Close": "y"})
-            m = Prophet()
+            df = df[(df["DayOfWeek"] != 5) & (df["DayOfWeek"] != 6)]
+            df = df.rename(columns={"Date": "ds", "Close": "y"})
+            
+            # Train the Prophet model
+            m = Prophet(daily_seasonality=True, yearly_seasonality=True)
             m.fit(df)
+            
+            # Make future dataframe and predictions
             future = m.make_future_dataframe(periods=period)
-            forecast = m.predict(future)  
-            forecast1=forecast.rename(columns={'ds':'Date','yhat':'Predicted Prices','yhat_lower':'Predicted Lowest','yhat_upper':'Predicted Highest','weekly':'Weekly','yearly':'Yearly'})
-            forelist=['Date','Predicted Prices','Predicted Lowest','Predicted Highest','Weekly','Yearly']
+            forecast = m.predict(future)
+            forecast1 = forecast.rename(columns={'ds':'Date','yhat':'Predicted Prices','yhat_lower':'Predicted Lowest','yhat_upper':'Predicted Highest'})
+            forelist = ['Date', 'Predicted Prices', 'Predicted Lowest', 'Predicted Highest']
             
             st.write("---")
             st.subheader("Forecast Data")
             st.write(forecast1[forelist])
             st.write('---')
+            
+            # Prediction interval
             st.subheader("Prediction in Interval of Time")
-            Start = st.date_input('Enter start date',value=None)
-            End=st.date_input('Enter End date',value=None)
-            if(Start!=End):
-                selected_forecast=forecast1.loc[(forecast1['Date']>pd.to_datetime(Start))&(forecast1['Date']<=pd.to_datetime(End))]
+            Start = st.date_input('Enter start date', value=None)
+            End = st.date_input('Enter end date', value=None)
+            if Start != End:
+                selected_forecast = forecast1.loc[(forecast1['Date'] > pd.to_datetime(Start)) & (forecast1['Date'] <= pd.to_datetime(End))]
                 st.write(selected_forecast[forelist])
             st.write("---")
-                        
+            
+            # Forecasted Data Graphs
             st.subheader('Forecasted Data Graphs')
             st.write("Actual Prices v/s Predicted Prices")
             fig = go.Figure()
-            fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['yhat'],mode='lines', name='Predicted Prices', line=dict(color='red')))
-            fig.add_trace(go.Scatter(x=df['ds'], y=df['y'],mode='lines', name='Actual Prices', marker=dict(color='blue')))
+            fig.add_trace(go.Scatter(x=forecast['ds'], y=forecast['yhat'], mode='lines', name='Predicted Prices', line=dict(color='red')))
+            fig.add_trace(go.Scatter(x=df['ds'], y=df['y'], mode='lines', name='Actual Prices', marker=dict(color='blue')))
             fig.update_layout(xaxis_rangeslider_visible=False)
-    
             st.plotly_chart(fig)
+            
             st.write("Forecast Components")
             fig2 = m.plot_components(forecast)
             st.write(fig2)
-            st.button("Exit  ")
-        st.write("---")
+            
+            st.button("Exit")
+            st.write("---")
         
 if selected=="HELP":
     st.write("---")
