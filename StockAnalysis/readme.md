@@ -26,7 +26,7 @@ To run this project locally, follow these steps:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/PratikRaj06/Projects/stock-analysis-project.git
+    git clone https://github.com/PratikRaj06/Projects/StockAnalysis.git
     ```
 2. Navigate to the project directory:
     ```bash
@@ -42,3 +42,9 @@ To run this project locally, follow these steps:
 To start the Streamlit application, run the following command:
 ```bash
 streamlit run app.py
+
+
+## URL 
+**URL to Hosted application** : https://stockanalysiszone.streamlit.app
+
+
