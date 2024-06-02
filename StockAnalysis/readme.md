@@ -47,8 +47,8 @@ streamlit run app.py
 
 
 ## URL 
-**URL to Hosted application** : [Stocks Analysis](https://stockanalysiszone.streamlit.app)
-https://stockanalysiszone.streamlit.app
+**Hosted application** : [Stocks Analysis](https://stockanalysiszone.streamlit.app)
+**URL**: https://stockanalysiszone.streamlit.app
 
 
 
