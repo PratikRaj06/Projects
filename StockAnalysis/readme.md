@@ -23,7 +23,7 @@ Welcome to the Stock Analysis Project! This project is designed to provide compr
 
 ## Application Look
 
-![Image](/app_view.png)
+![Image](StockAnalysis/app_view.png)
 
 ## Installation
 
